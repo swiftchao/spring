@@ -32,5 +32,16 @@ public class StudentJDBCTemplate implements StudentDAO {
 		List<Student> students = jdbcTemplateObject.query(SQL, new StudnetMapper());
 		return students;
 	}
-	
+
+	public void update(Integer id, Integer age) {
+		String SQL = "update student set age = ? where id = ?";
+		jdbcTemplateObject.update(SQL, age, id);
+		System.out.println("Update Record with ID = " + id);
+	}
+
+	public void delete(Integer id) {
+		String SQL = "delete from student where id = ?";
+		jdbcTemplateObject.update(SQL, id);
+		System.out.println("Deleted Record with ID = " + id);
+	}
 }

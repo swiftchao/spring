@@ -27,4 +27,17 @@ public interface StudentDAO {
 	 * @return
 	 */
 	public List<Student> listStudents();
+	
+	/**
+	 * This is the method to be used to update a record into the Student table.
+	 * @param id
+	 * @param age
+	 */
+	public void update(Integer id, Integer age);
+	
+	/**
+	 * This is the method to be used to delete a record from the Student table corresponding to a passed student id.
+	 * @param id
+	 */
+	public void delete(Integer id);
 }
