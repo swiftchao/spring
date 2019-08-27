@@ -22,6 +22,10 @@ public class MainApp {
 		testDelete(studentJDBCTemplate);
 		
 		testListStudents(studentJDBCTemplate);
+		
+		testGetStudent(studentJDBCTemplate);
+		
+		testGetStudentByStoreFun(studentJDBCTemplate);
 	}
 
 	private static void testUpdate(StudentJDBCTemplate studentJDBCTemplate) {
@@ -51,5 +55,17 @@ public class MainApp {
 	private static void testDelete(StudentJDBCTemplate studentJDBCTemplate) {
 		System.out.println("-----------------Delete Record with ID = 2-----------------");
 		studentJDBCTemplate.delete(2);
+	}
+	
+	private static void testGetStudent(StudentJDBCTemplate studentJDBCTemplate) {
+		System.out.println("-----------------Get Student's Name By ID 1:-----------------");
+		Student student = studentJDBCTemplate.getStudent(1);
+		System.out.println(student);
+	}
+	
+	private static void testGetStudentByStoreFun(StudentJDBCTemplate studentJDBCTemplate) {
+		System.out.println("-----------------Get Student's Name By ID 3:-----------------");
+		Student student = studentJDBCTemplate.getStudentByStoreFun(3);
+		System.out.println(student);
 	}
 }
