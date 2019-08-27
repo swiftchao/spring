@@ -1,6 +1,7 @@
 package org.chaofei.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -8,6 +9,9 @@ import org.chaofei.dao.StudentDAO;
 import org.chaofei.dao.mapper.StudnetMapper;
 import org.chaofei.entity.Student;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 public class StudentJDBCTemplate implements StudentDAO {
 	private DataSource dataSource;
@@ -24,7 +28,14 @@ public class StudentJDBCTemplate implements StudentDAO {
 	}
 
 	public Student getStudent(Integer id) {
-		return null;
+		SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withProcedureName("getRecord");
+		SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
+		Map<String, Object> out = jdbcCall.execute(in);
+		Student student = new Student();
+		student.setId(id);
+		student.setName((String) out.get("out_name"));
+		student.setAge((Integer) out.get("out_age"));
+		return student;
 	}
 
 	public List<Student> listStudents() {
@@ -43,5 +54,15 @@ public class StudentJDBCTemplate implements StudentDAO {
 		String SQL = "delete from student where id = ?";
 		jdbcTemplateObject.update(SQL, id);
 		System.out.println("Deleted Record with ID = " + id);
+	}
+
+	public Student getStudentByStoreFun(Integer id) {
+		SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withFunctionName("get_student_name");
+		SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
+		String name = jdbcCall.executeFunction(String.class, in);
+		Student student = new Student();
+		student.setId(id);
+		student.setName(name);
+		return student;
 	}
 }

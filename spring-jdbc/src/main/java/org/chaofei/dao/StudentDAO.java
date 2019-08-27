@@ -21,6 +21,8 @@ public interface StudentDAO {
 	public void create(String name, Integer age);
 	
 	public Student getStudent(Integer id);
+	
+	public Student getStudentByStoreFun(Integer id);
 
 	/**
 	 * This is the method to be used to list down all the records from the Student table.
