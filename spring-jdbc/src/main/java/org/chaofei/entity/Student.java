@@ -1,11 +1,17 @@
 package org.chaofei.entity;
 
-public class Student {
+import java.io.Serializable;
+import java.util.Arrays;
 
+public class Student implements Serializable {
+
+	private static final long serialVersionUID = -7652074771918759408L;
 	private Integer	id;
 	private String name;
 	private Integer age;
-	
+	private byte[] image;
+	private String description;
+
 	public Integer getId() {
 		return id;
 	}
@@ -30,8 +36,25 @@ public class Student {
 		this.age = age;
 	}
 
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", name=" + name + ", age=" + age + "]";
+		return "Student [id=" + id + ", name=" + name + ", age=" + age + ", image=" + Arrays.toString(image)
+				+ ", description=" + description + "]";
 	}
 }

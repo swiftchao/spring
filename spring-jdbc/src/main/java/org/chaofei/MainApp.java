@@ -17,29 +17,32 @@ public class MainApp {
 		
 		testUpdate(studentJDBCTemplate);
 		
-		testListStudents(studentJDBCTemplate);
-		
 		testDelete(studentJDBCTemplate);
-		
 		testListStudents(studentJDBCTemplate);
 		
-		testGetStudent(studentJDBCTemplate);
+		testGetStudentByStoredProcedure(studentJDBCTemplate);
 		
 		testGetStudentByStoreFun(studentJDBCTemplate);
+		
+		testUpdateStudentImageByBLOB(studentJDBCTemplate);
 	}
 
 	private static void testUpdate(StudentJDBCTemplate studentJDBCTemplate) {
 		System.out.println("-----------------Updating Record with ID = 2-----------------");
 		studentJDBCTemplate.update(2, 26);
+		Student student = testGetStudentById(studentJDBCTemplate, 1);
+		System.out.println(student.toString());
 	}
 
 	private static void testListStudents(StudentJDBCTemplate studentJDBCTemplate) {
 		System.out.print("----------------------Listing Multiple Recocrds----------------");
 		List<Student> students = studentJDBCTemplate.listStudents();
 		for (Student record : students) {
-			System.out.print("ID : " + record.getId());
-			System.out.print(", Name : " + record.getName());
-			System.out.println(", Age : " + record.getAge());
+			System.out.print("id : " + record.getId());
+			System.out.print(", name : " + record.getName());
+			System.out.println(", age : " + record.getAge());
+			System.out.println(", image : " + record.getImage());
+			System.out.println(", description : " + record.getDescription());
 		}
 	}
 
@@ -57,9 +60,9 @@ public class MainApp {
 		studentJDBCTemplate.delete(2);
 	}
 	
-	private static void testGetStudent(StudentJDBCTemplate studentJDBCTemplate) {
+	private static void testGetStudentByStoredProcedure(StudentJDBCTemplate studentJDBCTemplate) {
 		System.out.println("-----------------Get Student's Name By ID 1:-----------------");
-		Student student = studentJDBCTemplate.getStudent(1);
+		Student student = studentJDBCTemplate.getStudentByStoredProcedure(1);
 		System.out.println(student);
 	}
 	
@@ -67,5 +70,18 @@ public class MainApp {
 		System.out.println("-----------------Get Student's Name By ID 3:-----------------");
 		Student student = studentJDBCTemplate.getStudentByStoreFun(3);
 		System.out.println(student);
+	}
+	
+	private static void testUpdateStudentImageByBLOB(StudentJDBCTemplate studentJDBCTemplate) {
+		System.out.println("-----------------Update Student's image By ID 1:-----------------");
+		byte[] imageData = {0, 1, 0, 8, 20, 40, 95};
+		studentJDBCTemplate.updateStudentImageByBLOB(1, imageData);
+		Student student = testGetStudentById(studentJDBCTemplate, 1);
+		System.out.println(student.toString());
+	}
+	
+	private static Student testGetStudentById(StudentJDBCTemplate studentJDBCTemplate, Integer id) {
+		System.out.print("----------------------Listing Multiple Recocrds----------------");
+		return studentJDBCTemplate.getStudentById(id);
 	}
 }

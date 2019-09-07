@@ -20,7 +20,7 @@ public interface StudentDAO {
 	 */
 	public void create(String name, Integer age);
 	
-	public Student getStudent(Integer id);
+	public Student getStudentByStoredProcedure(Integer id);
 	
 	public Student getStudentByStoreFun(Integer id);
 
@@ -42,4 +42,8 @@ public interface StudentDAO {
 	 * @param id
 	 */
 	public void delete(Integer id);
+	
+	public void updateStudentImageByBLOB(Integer id, byte[] imageData);
+	
+	public Student getStudentById(Integer id);
 }
