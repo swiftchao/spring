@@ -1,5 +1,7 @@
 package org.chaofei.dao.impl;
 
+import java.io.ByteArrayInputStream;
+import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +12,11 @@ import org.chaofei.dao.mapper.StudnetMapper;
 import org.chaofei.entity.Student;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.support.SqlLobValue;
+import org.springframework.jdbc.support.lob.DefaultLobHandler;
 
 public class StudentJDBCTemplate implements StudentDAO {
 	private DataSource dataSource;
@@ -27,7 +32,7 @@ public class StudentJDBCTemplate implements StudentDAO {
 		jdbcTemplateObject.update(SQL, name, age);
 	}
 
-	public Student getStudent(Integer id) {
+	public Student getStudentByStoredProcedure(Integer id) {
 		SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withProcedureName("getRecord");
 		SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
 		Map<String, Object> out = jdbcCall.execute(in);
@@ -63,6 +68,27 @@ public class StudentJDBCTemplate implements StudentDAO {
 		Student student = new Student();
 		student.setId(id);
 		student.setName(name);
+		return student;
+	}
+
+	public void updateStudentImageByBLOB(Integer id, byte[] imageData) {
+		MapSqlParameterSource in = new MapSqlParameterSource();
+		in.addValue("id", id);
+		in.addValue("image", new SqlLobValue(new ByteArrayInputStream(imageData), 
+				imageData.length, new DefaultLobHandler()), Types.BLOB);
+		String SQL = "update student set image = :image where id = :id";
+		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
+		jdbcTemplateObject.update(SQL, in);
+		System.out.println("Updated Record with ID = " + id);
+	}
+
+	public Student getStudentById(Integer id) {
+		MapSqlParameterSource in = new MapSqlParameterSource();
+		in.addValue("id", id);
+		String SQL = "select * from student where id = :id";
+		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
+		System.out.println("Query Record with ID = " + id);
+		Student student = jdbcTemplateObject.queryForObject(SQL, in, new StudnetMapper());
 		return student;
 	}
 }

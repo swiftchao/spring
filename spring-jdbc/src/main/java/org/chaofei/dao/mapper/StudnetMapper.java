@@ -12,6 +12,8 @@ public class StudnetMapper implements RowMapper<Student> {
 		student.setId(rs.getInt("id"));
 		student.setName(rs.getString("name"));
 		student.setAge(rs.getInt("age"));
+		student.setImage(rs.getBytes("image"));
+		student.setDescription(rs.getString("description"));
 		return student;
 	}
 }
