@@ -91,4 +91,14 @@ public class StudentJDBCTemplate implements StudentDAO {
 		Student student = jdbcTemplateObject.queryForObject(SQL, in, new StudnetMapper());
 		return student;
 	}
+
+	public void updateStudentDescriptionByCOLB(Integer id, String description) {
+		MapSqlParameterSource in = new MapSqlParameterSource();
+		in.addValue("id", id);
+		in.addValue("description", description);
+		String SQL = "update student set description = :description where id = :id";
+		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
+		jdbcTemplateObject.update(SQL, in);
+		System.out.println("Updated Description Record with ID = " + id);
+	}
 }

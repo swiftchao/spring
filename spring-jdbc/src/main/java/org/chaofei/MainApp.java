@@ -25,6 +25,8 @@ public class MainApp {
 		testGetStudentByStoreFun(studentJDBCTemplate);
 		
 		testUpdateStudentImageByBLOB(studentJDBCTemplate);
+		
+		testUpdateStudentDescriptionByCOLB(studentJDBCTemplate);
 	}
 
 	private static void testUpdate(StudentJDBCTemplate studentJDBCTemplate) {
@@ -76,6 +78,14 @@ public class MainApp {
 		System.out.println("-----------------Update Student's image By ID 1:-----------------");
 		byte[] imageData = {0, 1, 0, 8, 20, 40, 95};
 		studentJDBCTemplate.updateStudentImageByBLOB(1, imageData);
+		Student student = testGetStudentById(studentJDBCTemplate, 1);
+		System.out.println(student.toString());
+	}
+	
+	private static void testUpdateStudentDescriptionByCOLB(StudentJDBCTemplate studentJDBCTemplate) {
+		System.out.println("-----------------Update Student's description By ID 1:-----------------");
+		String description = "This can be a very long text upto 4 GB of size.";
+		studentJDBCTemplate.updateStudentDescriptionByCOLB(1, description);
 		Student student = testGetStudentById(studentJDBCTemplate, 1);
 		System.out.println(student.toString());
 	}

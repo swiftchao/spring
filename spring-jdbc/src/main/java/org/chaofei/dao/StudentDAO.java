@@ -46,4 +46,6 @@ public interface StudentDAO {
 	public void updateStudentImageByBLOB(Integer id, byte[] imageData);
 	
 	public Student getStudentById(Integer id);
+	
+	public void updateStudentDescriptionByCOLB(Integer id, String description);
 }
