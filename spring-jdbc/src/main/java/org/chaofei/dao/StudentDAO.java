@@ -62,4 +62,8 @@ public interface StudentDAO {
     public void objectBatchUpdate(final List<Student> students);
 
     public void mutipleBatchUpdate(final List<Student> students);
+    
+    public List<Student> listStudentsWithResultSetExtractor();
+    
+    public void createByParameters(String name, Integer age);
 }

@@ -2,8 +2,11 @@ package org.chaofei.dao.impl;
 
 import java.io.ByteArrayInputStream;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,20 +15,24 @@ import javax.sql.DataSource;
 import org.chaofei.dao.StudentDAO;
 import org.chaofei.dao.mapper.StudnetMapper;
 import org.chaofei.entity.Student;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 
 public class StudentJDBCTemplate implements StudentDAO {
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplateObject;
+    private SimpleJdbcInsert jdbcInsert;
 
     public void setDataSource(DataSource ds) {
         this.dataSource = ds;
@@ -142,5 +149,33 @@ public class StudentJDBCTemplate implements StudentDAO {
             }
         });
         System.out.println("Records updated! updateCounts = " + updateCounts.toString());
+    }
+
+    public List<Student> listStudentsWithResultSetExtractor() {
+        String SQL = "select * from student";
+        List <Student> students = jdbcTemplateObject.query(SQL, new ResultSetExtractor<List<Student>>() {
+            public List<Student> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                List<Student> list = new ArrayList<Student>(); 
+                while (rs.next()) {
+                    Student student = new Student();
+                    student.setId(rs.getInt("id"));
+                    student.setName(rs.getString("name"));
+                    student.setAge(rs.getInt("age"));
+                    student.setImage(rs.getBytes("image"));
+                    student.setDescription(rs.getString("description"));
+                    list.add(student);
+                }
+                return list;
+            }
+        });
+        return students;
+    }
+
+    public void createByParameters(String name, Integer age) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("name", name);
+        parameters.put("age", age);
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("student");
+        jdbcInsert.execute(parameters);
     }
 }

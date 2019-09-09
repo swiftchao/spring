@@ -173,6 +173,22 @@ public class StudentJDBCTemplateTest extends TestCase {
         System.out.println(testGetStudentById(1));
         System.out.println(testGetStudentById(3));
     }
+    
+    @Test
+    public void testListStudentsWithResultSetExtractor() {
+        List<Student> students = studentJDBCTemplate.listStudentsWithResultSetExtractor();
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+    }
+    
+    @Test
+    public void testCreateByParameters() {
+        studentJDBCTemplate.createByParameters("Maxsu", 21);
+        studentJDBCTemplate.createByParameters("Curry", 22);
+        studentJDBCTemplate.createByParameters("Suzend", 23);
+        testListStudents();
+    }
 
     /*
      * get Student by id
