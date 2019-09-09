@@ -48,4 +48,6 @@ public interface StudentDAO {
 	public Student getStudentById(Integer id);
 	
 	public void updateStudentDescriptionByCOLB(Integer id, String description);
+	
+	public void batchUpdate(final List<Student> students);
 }

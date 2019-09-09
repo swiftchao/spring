@@ -1,6 +1,8 @@
 package org.chaofei.dao.impl;
 
 import java.io.ByteArrayInputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import javax.sql.DataSource;
 import org.chaofei.dao.StudentDAO;
 import org.chaofei.dao.mapper.StudnetMapper;
 import org.chaofei.entity.Student;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -30,6 +33,7 @@ public class StudentJDBCTemplate implements StudentDAO {
 	public void create(String name, Integer age) {
 		String SQL = "insert into student (name, age) values (?, ?)";
 		jdbcTemplateObject.update(SQL, name, age);
+		System.out.println("Created Record Name = " + name + " Age = " + age);
 	}
 
 	public Student getStudentByStoredProcedure(Integer id) {
@@ -100,5 +104,21 @@ public class StudentJDBCTemplate implements StudentDAO {
 		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
 		jdbcTemplateObject.update(SQL, in);
 		System.out.println("Updated Description Record with ID = " + id);
+	}
+
+	public void batchUpdate(final List<Student> students) {
+		String SQL = "update student set age = ? where id = ?";
+		int[] updateCounts = jdbcTemplateObject.batchUpdate(SQL, new BatchPreparedStatementSetter() {
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setInt(1, students.get(i).getAge());
+				ps.setInt(2, students.get(i).getId());
+			}
+			
+			public int getBatchSize() {
+				return students.size();
+			}
+		});
+		
+		System.out.println("Records updated! updateCounts = " + updateCounts.toString());
 	}
 }
