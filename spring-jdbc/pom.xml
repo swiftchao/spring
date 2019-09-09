@@ -31,12 +31,6 @@
 			<artifactId>spring-context</artifactId>
 			<version>4.1.4.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-			<version>RELEASE</version>
-		</dependency>
 	</dependencies>
-
 
 </project>
