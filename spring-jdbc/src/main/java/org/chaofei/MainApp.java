@@ -30,6 +30,8 @@ public class MainApp {
 		testUpdateStudentDescriptionByCOLB(studentJDBCTemplate);
 		
 		testBatchUpdate(studentJDBCTemplate);
+		
+		testObjectBatchUpdate(studentJDBCTemplate);
 	}
 
 	private static void testUpdate(StudentJDBCTemplate studentJDBCTemplate) {
@@ -40,13 +42,13 @@ public class MainApp {
 	}
 
 	private static void testListStudents(StudentJDBCTemplate studentJDBCTemplate) {
-		System.out.print("----------------------Listing Multiple Recocrds----------------");
+		System.out.println("----------------------Listing Multiple Recocrds----------------");
 		List<Student> students = studentJDBCTemplate.listStudents();
 		for (Student record : students) {
 			System.out.print("id : " + record.getId());
 			System.out.print(", name : " + record.getName());
-			System.out.println(", age : " + record.getAge());
-			System.out.println(", image : " + record.getImage());
+			System.out.print(", age : " + record.getAge());
+			System.out.print(", image : " + record.getImage());
 			System.out.println(", description : " + record.getDescription());
 		}
 	}
@@ -94,17 +96,16 @@ public class MainApp {
 	}
 	
 	private static Student testGetStudentById(StudentJDBCTemplate studentJDBCTemplate, Integer id) {
-		System.out.print("----------------------Listing Multiple Recocrds----------------");
+		System.out.println("----------------------Listing Multiple Recocrds----------------");
 		return studentJDBCTemplate.getStudentById(id);
 	}
 	
 	private static void testBatchUpdate(StudentJDBCTemplate studentJDBCTemplate) {
-		System.out.print("----------------------Recocrds Creation----------------");
+		System.out.println("----------------------Recocrds Creation----------------");
 		studentJDBCTemplate.create("Maxsu", 21);
 		studentJDBCTemplate.create("Curry", 22);
 		studentJDBCTemplate.create("Weiwei", 25);
 		testListStudents(studentJDBCTemplate);
-		
 		
 		System.out.println(testGetStudentById(studentJDBCTemplate, 1));
 		System.out.println(testGetStudentById(studentJDBCTemplate, 3));
@@ -119,8 +120,32 @@ public class MainApp {
 		students.add(student1);
 		studentJDBCTemplate.batchUpdate(students);
 		
+		System.out.println("----------------------Updated Students----------------");
+		System.out.println(testGetStudentById(studentJDBCTemplate, 1));
+		System.out.println(testGetStudentById(studentJDBCTemplate, 3));
+	}
+	
+	private static void testObjectBatchUpdate(StudentJDBCTemplate studentJDBCTemplate) {
+		System.out.println("----------------------Recocrds Creation----------------");
+		studentJDBCTemplate.create("Maxsu", 21);
+		studentJDBCTemplate.create("Curry", 22);
+		studentJDBCTemplate.create("Weiwei", 25);
+		testListStudents(studentJDBCTemplate);
 		
-		System.out.print("----------------------Updated Students----------------");
+		System.out.println(testGetStudentById(studentJDBCTemplate, 1));
+		System.out.println(testGetStudentById(studentJDBCTemplate, 3));
+		Student student = new Student();
+		student.setId(1);
+		student.setAge(15);
+		Student student1 = new Student();
+		student1.setId(3);
+		student1.setAge(16);
+		List<Student> students = new ArrayList<Student>();
+		students.add(student);
+		students.add(student1);
+		studentJDBCTemplate.batchUpdate(students);
+		
+		System.out.println("----------------------Updated Students----------------");
 		System.out.println(testGetStudentById(studentJDBCTemplate, 1));
 		System.out.println(testGetStudentById(studentJDBCTemplate, 3));
 	}

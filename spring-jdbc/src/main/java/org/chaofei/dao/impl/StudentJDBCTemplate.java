@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
@@ -120,5 +121,13 @@ public class StudentJDBCTemplate implements StudentDAO {
 		});
 		
 		System.out.println("Records updated! updateCounts = " + updateCounts.toString());
+	}
+
+	public void objectBatchUpdate(List<Student> students) {
+		String SQL = "update student set age = :age where id = :id";
+		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(students.toArray());
+		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
+		int[] updateCounts = jdbcTemplateObject.batchUpdate(SQL, batch);
+		System.out.println("Records updated! updateCounts = " + updateCounts);
 	}
 }
