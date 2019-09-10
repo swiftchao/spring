@@ -13,13 +13,17 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.chaofei.dao.StudentDAO;
-import org.chaofei.dao.mapper.StudnetMapper;
+import org.chaofei.dao.mapper.StudentMapper;
 import org.chaofei.entity.Student;
+import org.chaofei.procedure.StudentProcedure;
+import org.springframework.aop.aspectj.DeclareParentsAdvisor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -27,6 +31,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.support.SqlLobValue;
+import org.springframework.jdbc.object.SqlQuery;
+import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 
 public class StudentJDBCTemplate implements StudentDAO {
@@ -58,7 +64,7 @@ public class StudentJDBCTemplate implements StudentDAO {
 
     public List<Student> listStudents() {
         String SQL = "select * from student";
-        List<Student> students = jdbcTemplateObject.query(SQL, new StudnetMapper());
+        List<Student> students = jdbcTemplateObject.query(SQL, new StudentMapper());
         return students;
     }
 
@@ -102,7 +108,7 @@ public class StudentJDBCTemplate implements StudentDAO {
         String SQL = "select * from student where id = :id";
         NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
         System.out.println("Query Record with ID = " + id);
-        Student student = jdbcTemplateObject.queryForObject(SQL, in, new StudnetMapper());
+        Student student = jdbcTemplateObject.queryForObject(SQL, in, new StudentMapper());
         return student;
     }
 
@@ -177,5 +183,40 @@ public class StudentJDBCTemplate implements StudentDAO {
         parameters.put("age", age);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("student");
         jdbcInsert.execute(parameters);
+    }
+
+    public List<Student> listStudentsWithSqlQuery() {
+        String SQL = "select * from student";
+        SqlQuery<Student> sqlQuery = new SqlQuery<Student>() {
+            @Override
+            protected RowMapper<Student> newRowMapper(Object[] parameters, Map<?, ?> context) {
+                return new StudentMapper();
+            }
+        };
+        sqlQuery.setDataSource(dataSource);
+        sqlQuery.setSql(SQL);
+        List<Student> students = sqlQuery.execute();
+        return students;
+    }
+
+    public void updateStudentBySqlUpdate(Integer id, Integer age) {
+        String SQL = "update student set age = ? where id = ?";
+        SqlUpdate sqlUpdate = new SqlUpdate(dataSource, SQL);
+        sqlUpdate.declareParameter(new SqlParameter("age", Types.INTEGER));
+        sqlUpdate.declareParameter(new SqlParameter("id", Types.INTEGER));
+        sqlUpdate.compile();
+        sqlUpdate.update(age.intValue(), id.intValue());
+        System.err.println("Update Record with ID = " + id);
+    }
+
+    public Student getStudentByQueryForObject(Integer id) {
+        String SQL = "select * from student where id = ?";
+        Student student = jdbcTemplateObject.queryForObject(SQL, new Object[] {id}, new StudentMapper());
+        return student;
+    }
+
+    public Student getStudentByStoredProcedure(Integer id, String procedureName) {
+        StudentProcedure studentProcedure = new StudentProcedure(dataSource, procedureName);
+        return studentProcedure.execute(id);
     }
 }

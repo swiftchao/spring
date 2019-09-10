@@ -66,4 +66,12 @@ public interface StudentDAO {
     public List<Student> listStudentsWithResultSetExtractor();
     
     public void createByParameters(String name, Integer age);
+    
+    public List<Student> listStudentsWithSqlQuery();
+    
+    public void updateStudentBySqlUpdate(Integer id, Integer age);
+    
+    public Student getStudentByQueryForObject(Integer id);
+    
+    public Student getStudentByStoredProcedure(Integer id, String procedureName);
 }

@@ -189,6 +189,44 @@ public class StudentJDBCTemplateTest extends TestCase {
         studentJDBCTemplate.createByParameters("Suzend", 23);
         testListStudents();
     }
+    
+    @Test
+    public void testListStudentsWithSqlQuery() {
+        List<Student> students = studentJDBCTemplate.listStudentsWithSqlQuery();
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+    }
+    
+    @Test
+    public void testUpdateStudentBySqlUpdate() {
+        System.out.println("----------------------Recocrds Creation----------------");
+        studentJDBCTemplate.create("Maxsu", 21);
+        studentJDBCTemplate.create("Curry", 22);
+        studentJDBCTemplate.create("Suzend", 25);
+        System.out.println(testGetStudentById(1));
+        System.out.println(testGetStudentById(3));
+ 
+        studentJDBCTemplate.update(1, 10);
+        studentJDBCTemplate.update(3, 11);
+
+        System.out.println("----------------------Updated Students----------------");
+        System.out.println(testGetStudentById(1));
+        System.out.println(testGetStudentById(3));
+    }
+    
+    @Test
+    public void testGetStudentByQueryForObject() {
+        Student student = studentJDBCTemplate.getStudentByQueryForObject(1);
+        System.out.println(student.toString());
+    }
+    
+    @Test
+    public void testgetStudentByStoredProcedure() {
+        String procedureName = "getRecord";
+        Student student = studentJDBCTemplate.getStudentByStoredProcedure(1, procedureName);
+        System.out.println(student.toString());
+    }
 
     /*
      * get Student by id
