@@ -16,7 +16,6 @@ import org.chaofei.dao.StudentDAO;
 import org.chaofei.dao.mapper.StudentMapper;
 import org.chaofei.entity.Student;
 import org.chaofei.procedure.StudentProcedure;
-import org.springframework.aop.aspectj.DeclareParentsAdvisor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
