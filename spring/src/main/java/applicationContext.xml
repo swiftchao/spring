@@ -1,7 +1,20 @@
+<!-- 
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+-->
+
+ <!-- 
+        autodetect   如果有默认的构造方法，通过 construct的方式自动装配，否则使用 byType的方式自动装配。
+               用于spring2.5 ，spring3.0测试不通过，估计是废弃了。 
+ -->
+ <!-- 
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">    
 
     <bean id="helloBean" class="org.chaofei.core.HelloWorld">
         <property name="name" value="ChaoFei" />
@@ -69,6 +82,23 @@
     <bean id="language" class="org.chaofei.entity.Language">
         <property name="name" value="Java" />
     </bean>
-            
+    
+    <!--
+        Spring通过自动检测自动装配
+        AutoDetect – 按构造函数装配
+        AutoDetect – 按类型装配
+              如果没有找到默认的构造函数，自动检测将按类型选择装配。 
+    -->
+    <!-- 
+        autodetect   如果有默认的构造方法，通过 construct的方式自动装配，否则使用 byType的方式自动装配。
+               用于spring2.5 ，spring3.0测试不通过，估计是废弃了。 
+    -->
+    
+    <bean id="panda" class="org.chaofei.entity.Panda" autowire="autodetect" />
+    <bean id="kungfu" class="org.chaofei.entity.KungFu">
+        <property name="name" value="Tai Ji"></property>
+    </bean>
+  
+        
 </beans>
 

@@ -11,11 +11,26 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
-                
+             <!-- 
+             
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>4.1.4.RELEASE</version>
         </dependency>
+         -->
+         
+       <!-- 
+        autodetect   如果有默认的构造方法，通过 construct的方式自动装配，否则使用 byType的方式自动装配。
+               用于spring2.5 ，spring3.0测试不通过，估计是废弃了。 
+       -->
+       <!-- 
+       -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.2.8.RELEASE</version>
+        </dependency>
+        
     </dependencies>
 </project>
