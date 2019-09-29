@@ -6,6 +6,16 @@
     <bean id="helloBean" class="org.chaofei.core.HelloWorld">
         <property name="name" value="ChaoFei" />
     </bean>
+    
+    <bean id="outputSpringHelper" class="org.chaofei.output.OutputSpringHelper">
+        <!-- 这种依赖注入(DI)
+        <property name="outputGenerator" ref="csvOutputGenerator" />
+         -->
+        <property name="outputGenerator" ref="jsonOutputGenerator" />
+    </bean>
+    
+    <bean id="csvOutputGenerator" class="org.chaofei.output.impl.CsvOutputGenerator" />
+    <bean id="jsonOutputGenerator" class="org.chaofei.output.impl.JsonOutputGenerator" />
 
 </beans>
 
