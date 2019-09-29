@@ -13,8 +13,11 @@
  -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">    
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd">  
 
     <bean id="helloBean" class="org.chaofei.core.HelloWorld">
         <property name="name" value="ChaoFei" />
@@ -99,6 +102,32 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
         <property name="name" value="Tai Ji"></property>
     </bean>
   
+    <!-- Spring使用@Autowired -->
+    <!--
+        xmlns:context="http://www.springframework.org/schema/context"
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+        http://www.springframework.org/schema/context
+              加入如下内容才可以使用如下的标签
+        <context:annotation-config />
+              或者直接使用如下内容     
+        <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+     -->
+    <!-- 
+    <context:annotation-config />
+    -->
+     
+    <context:annotation-config />
+    
+    <bean id="acustomer" class="org.chaofei.entity.ACustomer">
+        <property name="type" value="1" />
+        <property name="action" value="buy" />
+    </bean>
+    <bean id="aperson" class="org.chaofei.entity.APerson">
+        <property name="name" value="QingSong" />
+        <property name="age" value="26" />
+        <property name="address" value="address 888" />
+    </bean>
+    
         
 </beans>
 
