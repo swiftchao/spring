@@ -7,6 +7,7 @@
         <property name="name" value="ChaoFei" />
     </bean>
     
+    <!-- 依赖注入 -->
     <bean id="outputSpringHelper" class="org.chaofei.output.OutputSpringHelper">
         <!-- 这种依赖注入(DI)
         <property name="outputGenerator" ref="csvOutputGenerator" />
@@ -17,5 +18,18 @@
     <bean id="csvOutputGenerator" class="org.chaofei.output.impl.CsvOutputGenerator" />
     <bean id="jsonOutputGenerator" class="org.chaofei.output.impl.JsonOutputGenerator" />
 
+    <!-- 依赖注入 
+    <bean id="customer" class="org.chaofei.entity.Customer">
+        <property name="person" ref="person" />
+    </bean>
+    <bean id="person" class="org.chaofei.entity.Person" />
+    -->
+    <!-- Spring自动装配 beans byName -->
+    <bean id="customer" class="org.chaofei.entity.Customer" autowire="byName" />
+    <bean id="person" class="org.chaofei.entity.Person" >
+        <property name="name" value="QingSong" />
+        <property name="age" value="18" />
+    </bean>
+    
 </beans>
 
