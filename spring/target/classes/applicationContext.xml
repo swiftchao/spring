@@ -59,6 +59,16 @@
         <property name="skill" value="Invisible" />
     </bean>
     -->
-        
+
+    <!-- Spring自动装配 beans 通过构造方法 -->
+    <bean id="developer" class="org.chaofei.entity.Developer">
+        <constructor-arg>
+            <ref bean="language" />
+        </constructor-arg>
+    </bean>
+    <bean id="language" class="org.chaofei.entity.Language">
+        <property name="name" value="Java" />
+    </bean>
+            
 </beans>
 
