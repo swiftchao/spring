@@ -31,5 +31,34 @@
         <property name="age" value="18" />
     </bean>
     
+    
+    <!-- Spring自动装配 beans byType -->
+    <!-- 通常情况下,明确地装配bean -->
+    <!-- 
+    <bean id="animal" class="org.chaofei.entity.Animal">
+        <property name="ability" ref="ability"></property>
+    </bean>
+    <bean id="ability" class="org.chaofei.entity.Ability">
+        <property name="skill" value="Invisible" />
+    </bean>
+    -->
+    <bean id="animal" class="org.chaofei.entity.Animal" autowire="byType" />
+    <bean id="ability" class="org.chaofei.entity.Ability">
+        <property name="skill" value="Invisible" />
+    </bean>
+    
+    <!-- 按类型多个的话就会报错
+     No qualifying bean of type [org.chaofei.entity.Ability] is defined: expected single matching bean but found 3: ability,steal,invisible
+    -->
+    <!--
+    <bean id="animaltest" class="org.chaofei.entity.Animal" autowire="byType" />
+    <bean id="steal" class="org.chaofei.entity.Ability">
+        <property name="skill" value="Steal" />
+    </bean>
+    <bean id="invisible" class="org.chaofei.entity.Ability">
+        <property name="skill" value="Invisible" />
+    </bean>
+    -->
+        
 </beans>
 
