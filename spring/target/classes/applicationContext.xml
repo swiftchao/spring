@@ -115,9 +115,7 @@
     <!-- 
     <context:annotation-config />
     -->
-     
     <context:annotation-config />
-    
     <bean id="acustomer" class="org.chaofei.entity.ACustomer">
         <property name="type" value="1" />
         <property name="action" value="buy" />
@@ -127,7 +125,16 @@
         <property name="age" value="26" />
         <property name="address" value="address 888" />
     </bean>
+    <bean id="aperson1" class="org.chaofei.entity.APerson">
+        <property name="name" value="QingSong1" />
+        <property name="age" value="25" />
+        <property name="address" value="address 666" />
+    </bean>
+    <bean id="aperson2" class="org.chaofei.entity.APerson">
+        <property name="name" value="QingSong2" />
+        <property name="age" value="18" />
+        <property name="address" value="address 6868" />
+    </bean>
     
-        
 </beans>
 
