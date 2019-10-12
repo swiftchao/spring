@@ -1,0 +1,20 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!-- 只需注入一个“CsvOutputGenerator” bean 到 “OutputHelperConstructor”对象，通过一个 构造函数注入依赖 -->
+	<bean id="outputHelperConstructor"
+		class="org.chaofei.output.OutputHelperConstructor">
+	   <constructor-arg>
+	       <bean class="org.chaofei.output.impl.CsvOutputGenerator" />
+	   </constructor-arg>
+	</bean>
+
+	<bean id="csvOutputGenerator"
+		class="org.chaofei.output.impl.CsvOutputGenerator" />
+	<bean id="jsonOutputGenerator"
+		class="org.chaofei.output.impl.JsonOutputGenerator" />
+
+
+</beans>
+

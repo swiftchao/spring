@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!-- 只需注入一个“CsvOutputGenerator” bean 到 “OutputHelperSetter”对象，通过一个 setter 方法 -->
+	<bean id="outputHelperSetter"
+		class="org.chaofei.output.OutputHelperSetter">
+		<property name="outputGenerator">
+			<ref bean="csvOutputGenerator" />
+		</property>
+	</bean>
+
+	<bean id="csvOutputGenerator"
+		class="org.chaofei.output.impl.CsvOutputGenerator" />
+	<bean id="jsonOutputGenerator"
+		class="org.chaofei.output.impl.JsonOutputGenerator" />
+
+</beans>
+
